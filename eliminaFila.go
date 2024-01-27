@@ -1,9 +1,16 @@
 package main
 
-import (
-	"fmt"
-)
-
 func eliminaFila(g gioco, sigma string) {
-	fmt.Println("Hello, playground")
+	if controllaScatola(g.scatola, sigma) {
+		return
+	} else if controllaTavolo(g.tavolo, sigma) {
+		rowName, row := trovaFilaSulTavolo(g.tavolo, sigma)
+
+		current := row.head
+		for current != nil {
+			g.scatola[current.data.sigma] = [2]string{current.data.alpha, current.data.beta}
+			current = current.next
+		}
+		delete(g.tavolo, rowName)
+	}
 }
