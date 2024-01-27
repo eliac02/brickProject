@@ -34,7 +34,29 @@ func addNode(list *linkedList, node listNode) {
 }
 
 func deleteNode(list *linkedList, node *listNode) {
+	current := list.head
+	for current != nil {
+		if current == node {
+			current.prev.next = current.next
+			current.next.prev = current.prev
+			return
+		}
+		current = current.next
+	}
 }
 
-func insertNode(list *linkedList, node *listNode) {
+func insertNode(list *linkedList, node *listNode, id string) {
+	current := list.head
+	name := current.data.sigma
+	for current != nil {
+		if name == id {
+			node.next = current.next
+			node.prev = current
+			current.next.prev = node
+			current.next = node
+			return
+		}
+		current = current.next
+		name = current.data.sigma
+	}
 }
