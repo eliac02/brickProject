@@ -33,6 +33,7 @@ func addNode(list *linkedList, node listNode) {
 	}
 }
 
+// da completare con controlli nel caso il nodo sia il primo o l'ultimo
 func deleteNode(list *linkedList, node *listNode) {
 	current := list.head
 	for current != nil {
@@ -45,7 +46,8 @@ func deleteNode(list *linkedList, node *listNode) {
 	}
 }
 
-func insertNode(list *linkedList, node *listNode, id string) {
+// da completare con controlli nel caso il nodo sia il primo o l'ultimo
+func insertNode(list *linkedList, node *listNode, id string) { // id è il nome del nodo dopo il quale inserire node
 	current := list.head
 	name := current.data.sigma
 	for current != nil {

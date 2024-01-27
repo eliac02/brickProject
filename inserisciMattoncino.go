@@ -1,9 +1,15 @@
 package main
 
-import (
-	"fmt"
-)
-
+// uso una ricerca lineare perche' ho frequenti inserimenti
 func inserisciMattoncino(g gioco, alpha, beta, sigma string) {
-	fmt.Println("Hello, playground")
+	//se esiste gia' sigma nella scatola, oppure se alpha = beta, non faccio nulla
+	//altrimenti inserisco nella scatola il mattoncino alpha beta sigma
+	if alpha != beta {
+		for key := range g.scatola {
+			if key == sigma {
+				return
+			}
+		}
+		g.scatola[sigma] = [2]string{alpha, beta}
+	}
 }

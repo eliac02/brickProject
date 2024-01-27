@@ -16,7 +16,7 @@ type mattoncino struct {
 }
 
 type fila struct {
-	//componenti linkedList
+	componenti      linkedList
 	nome            string
 	indiceCacofonia int
 }
