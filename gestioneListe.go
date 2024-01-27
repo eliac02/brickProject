@@ -62,3 +62,14 @@ func insertNode(list *linkedList, node *listNode, id string) { // id è il nome 
 		name = current.data.sigma
 	}
 }
+
+func searchNode(list *linkedList, id string) *listNode {
+	current := list.head
+	for current != nil {
+		if current.data.sigma == id {
+			return current
+		}
+		current = current.next
+	}
+	return nil
+}

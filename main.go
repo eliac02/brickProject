@@ -5,8 +5,8 @@ import (
 )
 
 type gioco struct {
-	scatola map[string][2]string
-	tavolo  []fila
+	scatola map[string][2]string //la chiave e' il nome del mattoncino, il valore sono i due bordi
+	tavolo  map[string]*linkedList
 }
 
 type mattoncino struct {
@@ -23,7 +23,7 @@ type fila struct {
 
 func main() {
 	fmt.Println("Hello, playground")
-	g := gioco{scatola: make(map[string][2]string), tavolo: make([]fila, 0)}
+	g := gioco{scatola: make(map[string][2]string), tavolo: make(map[string]*linkedList)}
 	listaNomi := ""
 	disponiFila(g, listaNomi)
 }
