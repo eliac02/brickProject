@@ -11,19 +11,30 @@ type linkedList struct {
 	tail *listNode
 }
 
+// crea una nuova lista
+func newList() *linkedList {
+	return &linkedList{nil, nil}
+}
+
+// crea un nuovo nodo
 func newNode(data mattoncino) *listNode {
 	return &listNode{nil, nil, data}
 }
 
-func addNode(row *linkedList, brick listNode) {
-	if row.head == nil {
-		row.head = &brick
-		row.tail = &brick
+// insertisce alla fine della lista un nuovo nodo
+func addNode(list *linkedList, node listNode) {
+	if list.head == nil {
+		list.head = &node
+		list.tail = &node
 	} else {
-
-		//controlla questa parte della funzione
-		row.tail.next = &brick
-		brick.prev = row.tail
-		row.tail = &brick
+		list.tail.next = &node
+		node.prev = list.tail
+		list.tail = &node
 	}
+}
+
+func deleteNode(list *linkedList, node *listNode) {
+}
+
+func insertNode(list *linkedList, node *listNode) {
 }
