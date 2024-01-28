@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 type gioco struct {
@@ -22,8 +23,25 @@ type fila struct {
 }
 
 func main() {
-	fmt.Println("Hello, playground")
-	g := gioco{scatola: make(map[string][2]string), tavolo: make(map[string]*linkedList)}
-	listaNomi := ""
-	disponiFila(g, listaNomi)
+	var istruzione string
+	var g gioco = gioco{make(map[string][2]string), make(map[string]*linkedList)}
+	for {
+		fmt.Scan(&istruzione)
+		temp := strings.Split(istruzione, " ")
+		switch temp[0] {
+		case "m":
+			inserisciMattoncino(g, temp[1], temp[2], temp[3])
+		case "s":
+			stampaMattoncino(g, temp[1])
+		case "d":
+			listaNomi := ""
+			disponiFila(g, listaNomi)
+		case "S":
+			stampaFila(g, temp[1])
+		case "e":
+			eliminaFila(g, temp[1])
+		case "q":
+			break
+		}
+	}
 }
