@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -34,6 +35,7 @@ func main() {
 			inserisciMattoncino(g, temp[1], temp[2], temp[3])
 		case "s":
 			stampaMattoncino(g, temp[1])
+			fmt.Println()
 		case "d":
 			listaNomi := ""
 			disponiFila(g, listaNomi)
