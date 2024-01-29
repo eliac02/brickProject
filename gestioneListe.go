@@ -22,14 +22,14 @@ func newNode(data mattoncino) *listNode {
 }
 
 // insertisce alla fine della lista un nuovo nodo
-func addNode(list *linkedList, node listNode) {
+func addNode(list *linkedList, node *listNode) {
 	if list.head == nil {
-		list.head = &node
-		list.tail = &node
+		list.head = node
+		list.tail = node
 	} else {
-		list.tail.next = &node
+		list.tail.next = node
 		node.prev = list.tail
-		list.tail = &node
+		list.tail = node
 	}
 }
 

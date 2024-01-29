@@ -11,6 +11,7 @@ func stampaMattoncino(g gioco, sigma string) {
 	} else if controllaTavolo(g.tavolo, sigma) {
 		_, row := trovaFilaSulTavolo(g.tavolo, sigma)
 		nodo := searchNode(row, sigma)
+		//stampa effettiva
 		fmt.Printf("%s: %s, %s", sigma, nodo.data.alpha, nodo.data.beta)
 	}
 }

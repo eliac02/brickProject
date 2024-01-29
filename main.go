@@ -29,15 +29,16 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		temp := strings.Split(scanner.Text(), " ")
-		switch temp[0] {
+		operation, operand, _ := strings.Cut(scanner.Text(), " ")
+		switch operation {
 		case "m":
-			inserisciMattoncino(g, temp[1], temp[2], temp[3])
+			names := strings.Split(operand, " ")
+			inserisciMattoncino(g, names[0], names[1], names[2])
 		case "s":
-			stampaMattoncino(g, temp[1])
+			stampaMattoncino(g, operand)
 			fmt.Println()
 		case "d":
-			listaNomi := ""
+			listaNomi := operand //per esempio "+ciao -cane -gatto +macchina"
 			disponiFila(g, listaNomi)
 		case "S":
 			stampaFila(g, temp[1])
