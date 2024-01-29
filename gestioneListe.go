@@ -1,9 +1,14 @@
 package main
 
+import (
+	"fmt"
+)
+
 type listNode struct {
-	next *listNode
-	prev *listNode
-	data mattoncino
+	next  *listNode
+	prev  *listNode
+	segno byte
+	data  mattoncino
 }
 
 type linkedList struct {
@@ -17,8 +22,8 @@ func newList() *linkedList {
 }
 
 // crea un nuovo nodo
-func newNode(data mattoncino) *listNode {
-	return &listNode{nil, nil, data}
+func newNode(data mattoncino, segno byte) *listNode {
+	return &listNode{nil, nil, segno, data}
 }
 
 // insertisce alla fine della lista un nuovo nodo
@@ -34,7 +39,7 @@ func addNode(list *linkedList, node *listNode) {
 }
 
 // da completare con controlli nel caso il nodo sia il primo o l'ultimo
-func deleteNode(list *linkedList, node *listNode) {
+/*func deleteNode(list *linkedList, node *listNode) {
 	current := list.head
 	for current != nil {
 		if current == node {
@@ -44,10 +49,10 @@ func deleteNode(list *linkedList, node *listNode) {
 		}
 		current = current.next
 	}
-}
+}*/
 
 // da completare con controlli nel caso il nodo sia il primo o l'ultimo
-func insertNode(list *linkedList, node *listNode, id string) { // id è il nome del nodo dopo il quale inserire node
+/*func insertNode(list *linkedList, node *listNode, id string) { // id è il nome del nodo dopo il quale inserire node
 	current := list.head
 	name := current.data.sigma
 	for current != nil {
@@ -61,7 +66,7 @@ func insertNode(list *linkedList, node *listNode, id string) { // id è il nome 
 		current = current.next
 		name = current.data.sigma
 	}
-}
+}*/
 
 func searchNode(list *linkedList, id string) *listNode {
 	current := list.head
@@ -72,4 +77,17 @@ func searchNode(list *linkedList, id string) *listNode {
 		current = current.next
 	}
 	return nil
+}
+
+func printList(list *linkedList) {
+	current := list.head
+	for current != nil {
+		switch current.segno {
+		case '+':
+			fmt.Printf("%s: %s, %s\n", current.data.sigma, current.data.alpha, current.data.beta)
+		case '-':
+			fmt.Printf("%s: %s, %s\n", current.data.sigma, current.data.beta, current.data.alpha)
+		}
+		current = current.next
+	}
 }

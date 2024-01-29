@@ -14,7 +14,7 @@ func controllaScatola(scatola map[string][2]string, sigma string) bool {
 }
 
 // controlla se il mattoncino sigma e' sul tavolo
-func controllaTavolo(tavolo map[string]*linkedList, sigma string) bool {
+func controllaTavolo(tavolo map[string]fila, sigma string) bool {
 	for key := range tavolo {
 		if strings.Contains(key, sigma) {
 			return true
@@ -24,13 +24,13 @@ func controllaTavolo(tavolo map[string]*linkedList, sigma string) bool {
 }
 
 // trova la fila sul tavolo che contiene il mattoncino sigma
-func trovaFilaSulTavolo(tavolo map[string]*linkedList, sigma string) (string, *linkedList) {
-	for key := range tavolo {
+func trovaFilaSulTavolo(tavolo map[string]fila, sigma string) (string, fila) {
+	for key, value := range tavolo {
 		if strings.Contains(key, sigma) {
-			return key, tavolo[key]
+			return key, value
 		}
 	}
-	return "", nil
+	return "", fila{}
 }
 
 func verificaFila(sliceNames []string, g gioco) {

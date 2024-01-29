@@ -9,7 +9,7 @@ import (
 
 type gioco struct {
 	scatola map[string][2]string //la chiave e' il nome del mattoncino, il valore sono i due bordi
-	tavolo  map[string]*linkedList
+	tavolo  map[string]fila      //la chiave e' il nome della fila, il valore e' la fila
 }
 
 type mattoncino struct {
@@ -18,14 +18,13 @@ type mattoncino struct {
 	sigma string
 }
 
-/*type fila struct {
+type fila struct {
 	componenti      *linkedList
-	nome            string
 	indiceCacofonia int
-}*/
+}
 
 func main() {
-	var g gioco = gioco{make(map[string][2]string), make(map[string]*linkedList)}
+	var g gioco = gioco{make(map[string][2]string), make(map[string]fila)}
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -41,9 +40,9 @@ func main() {
 			listaNomi := operand //per esempio "+ciao -cane -gatto +macchina"
 			disponiFila(g, listaNomi)
 		case "S":
-			stampaFila(g, temp[1])
+			stampaFila(g, operand)
 		case "e":
-			eliminaFila(g, temp[1])
+			eliminaFila(g, operand)
 		case "q":
 			return
 		}

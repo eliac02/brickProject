@@ -2,9 +2,9 @@ package main
 
 import "strings"
 
-func creaFila(g gioco, tempSlice []string, l *linkedList) {
-	for _, name := range tempSlice {
-		node := newNode(mattoncino{alpha: g.scatola[name][0], beta: g.scatola[name][1], sigma: name})
+func creaFila(g gioco, sliceNames []string, l *linkedList) {
+	for _, name := range sliceNames {
+		node := newNode(mattoncino{alpha: g.scatola[name][0], beta: g.scatola[name][1], sigma: name}, name[0])
 		addNode(l, node)
 	}
 }
@@ -26,8 +26,7 @@ func disponiFila(g gioco, listaNomi string) {
 	verificaFila(sliceNames, g)
 
 	//dispongo la fila sul tavolo
-	tempSlice := strings.Split(nomeFila, " ")
 	l := newList()
-	creaFila(g, tempSlice, l)
-	g.tavolo[nomeFila] = l
+	creaFila(g, sliceNames, l)
+	g.tavolo[nomeFila] = fila{componenti: l, indiceCacofonia: 0}
 }
