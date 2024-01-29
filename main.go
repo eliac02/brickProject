@@ -43,6 +43,12 @@ func main() {
 			stampaFila(g, operand)
 		case "e":
 			eliminaFila(g, operand)
+		case "p":
+			if controllaScatola(g.scatola, operand) {
+				fmt.Println("true")
+			} else {
+				fmt.Println("false")
+			}
 		case "q":
 			return
 		}
