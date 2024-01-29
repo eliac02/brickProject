@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"bufio"
+	"os"
 	"strings"
 )
 
@@ -16,18 +17,18 @@ type mattoncino struct {
 	sigma string
 }
 
-type fila struct {
+/*type fila struct {
 	componenti      *linkedList
 	nome            string
 	indiceCacofonia int
-}
+}*/
 
 func main() {
-	var istruzione string
 	var g gioco = gioco{make(map[string][2]string), make(map[string]*linkedList)}
-	for {
-		fmt.Scan(&istruzione)
-		temp := strings.Split(istruzione, " ")
+
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		temp := strings.Split(scanner.Text(), " ")
 		switch temp[0] {
 		case "m":
 			inserisciMattoncino(g, temp[1], temp[2], temp[3])
@@ -41,7 +42,7 @@ func main() {
 		case "e":
 			eliminaFila(g, temp[1])
 		case "q":
-			break
+			return
 		}
 	}
 }
