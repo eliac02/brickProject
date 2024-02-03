@@ -1,0 +1,5 @@
+m cerchio quadrato cammello
+m stella fiore elefante
+m luna stella cavallo
+s elefante
+q

@@ -43,6 +43,8 @@ func main() {
 			stampaFila(g, operand)
 		case "e":
 			eliminaFila(g, operand)
+		case "i":
+			fmt.Println(indiceCacofonia(g, operand))
 		case "M":
 			stringhe := strings.Split(operand, " ")
 			fmt.Println(sottostringaMassima(stringhe[0], stringhe[1]))

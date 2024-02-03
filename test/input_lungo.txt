@@ -1,0 +1,20 @@
+m cerchio quadrato cammello
+m sole croce topolino
+m stella fiore elefante
+m sole stella cane
+m luna stella cavallo
+m cerchio luna cappello
+m fiore quadrato mela
+m croce fiore topo
+m cuore croce tela
+m croce sole tavolo
+M cammello mela
+M mela topo
+M topo tavolo
+M tavolo cane
+M cane cavallo
+d +cammello -mela -topo +tavolo +cane -cavallo
+S cavallo
+i topo
+e cammello
+q
