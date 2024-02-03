@@ -24,10 +24,10 @@ func disponiFila(g gioco, listaNomi string) {
 	}
 
 	//controlla che i mattoncni formino una fila
-	verificaFila(sliceNames, g)
-
-	//dispongo la fila sul tavolo
-	l := newList()
-	creaFila(g, sliceNames, l)
-	g.tavolo[nomeFila] = fila{componenti: l, indiceCacofonia: 0}
+	if verificaFila(sliceNames, g) {
+		//dispongo la fila sul tavolo
+		l := newList()
+		creaFila(g, sliceNames, l)
+		g.tavolo[nomeFila] = fila{componenti: l, indiceCacofonia: 0}
+	}
 }

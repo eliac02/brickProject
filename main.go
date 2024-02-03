@@ -43,6 +43,9 @@ func main() {
 			stampaFila(g, operand)
 		case "e":
 			eliminaFila(g, operand)
+		case "f":
+			estremi := strings.Split(operand, " ")
+			disponiFilaMinima(g, estremi[0], estremi[1])
 		case "i":
 			fmt.Println(indiceCacofonia(g, operand))
 		case "M":

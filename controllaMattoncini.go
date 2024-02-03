@@ -33,28 +33,29 @@ func trovaFilaSulTavolo(tavolo map[string]fila, sigma string) (string, fila) {
 	return "", fila{}
 }
 
-func verificaFila(sliceNames []string, g gioco) {
+func verificaFila(sliceNames []string, g gioco) bool {
 	signPrev, sigmaPrev := sliceNames[0][0], sliceNames[0][1:]
 	for i := 1; i < len(sliceNames)-1; i++ {
 		sign, sigma := sliceNames[i][0], sliceNames[i][1:]
 		switch {
 		case sign == '+' && signPrev == '+':
 			if g.scatola[sigma][0] != g.scatola[sigmaPrev][1] {
-				return
+				return false
 			}
 		case sign == '+' && signPrev == '-':
 			if g.scatola[sigma][0] != g.scatola[sigmaPrev][0] {
-				return
+				return false
 			}
 		case sign == '-' && signPrev == '+':
 			if g.scatola[sigma][1] != g.scatola[sigmaPrev][1] {
-				return
+				return false
 			}
 		case sign == '-' && signPrev == '-':
 			if g.scatola[sigma][1] != g.scatola[sigmaPrev][0] {
-				return
+				return false
 			}
 		}
 		signPrev, sigmaPrev = sign, sigma
 	}
+	return true
 }

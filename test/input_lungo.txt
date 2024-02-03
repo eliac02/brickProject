@@ -8,13 +8,30 @@ m fiore quadrato mela
 m croce fiore topo
 m cuore croce tela
 m croce sole tavolo
-M cammello mela
-M mela topo
-M topo tavolo
-M tavolo cane
-M cane cavallo
-d +cammello -mela -topo +tavolo +cane -cavallo
+M mela tela
+M cappello cammello
+M cane topo
+M topo topolino
+M gatto topo
+M tela elefante
+f stella cerchio
 S cavallo
-i topo
+i cappello
+f stella cerchio
+S elefante
+i mela
+f fiore cerchio
 e cammello
+f fiore cerchio
+S mela
+i cammello
+e mela
+e cappello
+m cuore cerchio pesca
+f croce croce
+S tavolo
+i topolino
+f croce croce
+S cammello
+i pesca
 q
