@@ -7,6 +7,7 @@ func creaFila(g gioco, sliceNames []string, l *linkedList) {
 		node := newNode(mattoncino{alpha: g.scatola[name[1:]][0], beta: g.scatola[name[1:]][1], sigma: name[1:]}, name[0])
 		addNode(l, node)
 		delete(g.scatola, name[1:])
+		delete(g.forme, name[1:])
 	}
 }
 

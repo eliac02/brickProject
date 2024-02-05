@@ -10,6 +10,7 @@ import (
 type gioco struct {
 	scatola map[string][2]string //la chiave e' il nome del mattoncino, il valore sono i due bordi
 	tavolo  map[string]fila      //la chiave e' il nome della fila, il valore e' la fila
+	forme   map[string]bool      //la chiave e' la forma, il valore e' booleano
 }
 
 type mattoncino struct {
@@ -24,7 +25,7 @@ type fila struct {
 }
 
 func main() {
-	var g gioco = gioco{make(map[string][2]string), make(map[string]fila)}
+	var g gioco = gioco{make(map[string][2]string), make(map[string]fila), make(map[string]bool)}
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {

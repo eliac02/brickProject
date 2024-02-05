@@ -13,5 +13,7 @@ func inserisciMattoncino(g gioco, alpha, beta, sigma string) {
 			}
 		}
 		g.scatola[sigma] = [2]string{alpha, beta}
+		g.forme[alpha] = true
+		g.forme[beta] = true
 	}
 }

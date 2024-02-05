@@ -18,7 +18,7 @@ func newQueueElement(value string) *queueElement {
 	return &queueElement{value, nil}
 }
 
-func enqueue(q *queue, value string) {
+func (q *queue) enqueue(value string) {
 	if q.head == nil {
 		q.head = newQueueElement(value)
 		q.tail = q.head
@@ -28,7 +28,7 @@ func enqueue(q *queue, value string) {
 	}
 }
 
-func dequeue(q *queue) {
+func (q *queue) dequeue() {
 	if q.head == nil {
 		return
 	}
@@ -38,11 +38,11 @@ func dequeue(q *queue) {
 	}
 }
 
-func isEmpty(q *queue) bool {
+func (q *queue) isEmpty() bool {
 	return q.head == nil
 }
 
-func bottom(q *queue) string {
+func (q *queue) bottom() string {
 	if q.head == nil {
 		return ""
 	}
