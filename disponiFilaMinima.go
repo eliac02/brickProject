@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func contains(array []string, str string) bool {
 	for _, element := range array {
@@ -13,140 +11,135 @@ func contains(array []string, str string) bool {
 	return false
 }
 
-func rimuoviElementoDaArray(array []string, indice int) []string {
-	return append(array[:indice], array[indice+1:]...)
-}
-
-func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) { //O(n^3)
-	for forma := range g.forme { //O(m)
-		//aggiunge forma alla lista di adiacenza
-		listaAdiacenza[forma] = make([]string, 0)
-		//controlla se la forma e' adiacente ad un'altra forma
-		//per farlo controllo le forme dei mattoncini dentro alla scatola
-		for _, mattoncino := range g.scatola { //O(n)
-			//controllo anche che la forma non sia gia' presente nella lista di adiacenza
+func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) {
+	for forma := range g.forme {
+		listaAdiacenza[forma] = []string{}
+		for _, mattoncino := range g.scatola {
 			if mattoncino[0] == forma && !contains(listaAdiacenza[forma], mattoncino[1]) {
 				listaAdiacenza[forma] = append(listaAdiacenza[forma], mattoncino[1])
-			} else if mattoncino[1] == forma && !contains(listaAdiacenza[forma], mattoncino[0]) {
+			}
+			if mattoncino[1] == forma && !contains(listaAdiacenza[forma], mattoncino[0]) {
 				listaAdiacenza[forma] = append(listaAdiacenza[forma], mattoncino[0])
 			}
 		}
 	}
 }
 
-func ricostruisciSequenza(alpha, beta string, elencoPredecessori map[string]string) []string {
-	var sequenza []string
-	for current := beta; current != ""; current = elencoPredecessori[current] {
-		sequenza = append([]string{current}, sequenza...)
-	}
-	return sequenza
-}
-
 func creaListaNomi(g gioco, sequenzaForme []string) string {
-	listaNomi := ""
+	var listaNomi string
 	for i := len(sequenzaForme) - 1; i > 0; i-- {
+		//controllo i bordi dei mattoncini nella scatola
+		//se combaciano ne concateno il nome alla stringa
 		for nome, bordi := range g.scatola {
-			coppiaForme := [2]string{sequenzaForme[i], sequenzaForme[i-1]}
-			if bordi == coppiaForme {
+			if sequenzaForme[i] == bordi[0] && sequenzaForme[i-1] == bordi[1] {
 				listaNomi += "+" + nome + " "
-				break
 			}
-			coppiaFormeInversa := [2]string{sequenzaForme[i-1], sequenzaForme[i]}
-			if bordi == coppiaFormeInversa {
+			if sequenzaForme[i] == bordi[1] && sequenzaForme[i-1] == bordi[0] {
 				listaNomi += "-" + nome + " "
-				break
 			}
 		}
 	}
 	return listaNomi
 }
 
-func trovaSequenzaPiuCorta(elencoSequenze [][]string) int {
-	min := len(elencoSequenze[0])
-	var i int
-	for index, sequenza := range elencoSequenze {
-		if len(sequenza) < min {
-			min = len(sequenza)
-			i = index
-		}
-	}
-	return i
-}
-
-func casoAlphaUgualeBeta(g gioco, coda *queue, listaAdiacenza map[string][]string, elencoPredecessori map[string]string, elencoNodiVisitati map[string]bool, alpha, beta string) []string {
-	var elencoSequenze [][]string
+func ricostruisciSequenza(alpha, beta string, predecessori map[string]string) []string {
 	var sequenzaForme []string
-	for _, adj := range listaAdiacenza[alpha] {
-		tempMap := make(map[string][]string)
-		for k, v := range listaAdiacenza {
-			tempMap[k] = append([]string{}, v...)
-		}
-		for i, v := range tempMap[adj] {
-			if v == alpha {
-				tempArray := rimuoviElementoDaArray(tempMap[adj], i)
-				tempMap[adj] = tempArray
-			}
-		}
-		for i, v := range tempMap[alpha] {
-			if v == adj {
-				tempArray := rimuoviElementoDaArray(tempMap[alpha], i)
-				tempMap[alpha] = tempArray
-			}
-		}
-		sequenzaForme = bfsNormale(g, coda, tempMap, elencoPredecessori, elencoNodiVisitati, adj, beta)
-		elencoSequenze = append(elencoSequenze, sequenzaForme)
+	for current := beta; current != alpha; current = predecessori[current] {
+		sequenzaForme = append(sequenzaForme, current)
 	}
-	index := trovaSequenzaPiuCorta(elencoSequenze)
-	return elencoSequenze[index]
+	sequenzaForme = append(sequenzaForme, alpha)
+	return sequenzaForme
 }
 
-func bfsNormale(g gioco, coda *queue, listaAdiacenza map[string][]string, elencoPredecessori map[string]string, elencoNodiVisitati map[string]bool, alpha, beta string) []string {
-	coda.enqueue(alpha)
-	elencoPredecessori[alpha] = ""
-	elencoNodiVisitati[alpha] = true
+func controllaCasoSemplice(g gioco, listaAdiacenza map[string][]string, alpha string) (bool, string) {
+	listaNomi := ""
+	counter := 0
+	//controllo tra i vicini di alpha
+	for _, adj := range listaAdiacenza[alpha] {
+		//controlla se ci sono i mattoncini giusti nella scatola
+		for nome, bordi := range g.scatola {
+			if bordi[0] == alpha && bordi[1] == adj {
+				listaNomi += "+" + nome + " "
+				counter++
+			} else if bordi[1] == alpha && bordi[0] == adj {
+				listaNomi += "-" + nome + " "
+				counter++
+			}
+		}
+		if counter == 2 {
+			return true, listaNomi
+		} else {
+			listaNomi = ""
+			counter = 0
+		}
+	}
+	return false, ""
+}
 
+func bfsNormale(listaAdiacenza map[string][]string, alpha, beta string) []string {
+	//creo tutte le strutture dati necessarie
+
+	// Mappa per tenere traccia dei nodi visitati
+	nodiVisitati := make(map[string]bool)
+	//Mappa dei predecessori
+	predecessori := make(map[string]string)
+	// Coda per la BFS
+	coda := newQueue()
+
+	// Aggiungo il nodo di partenza alla coda e lo marco come visitato
+	coda.enqueue(alpha)
+	nodiVisitati[alpha] = true
+
+	// Finché ci sono nodi nella coda
 	for !coda.isEmpty() {
-		current := coda.bottom()
+		currentNode := coda.bottom()
 		coda.dequeue()
-		for _, forma := range listaAdiacenza[current] {
-			if !elencoNodiVisitati[forma] {
-				coda.enqueue(forma)
-				elencoPredecessori[forma] = current
-				elencoNodiVisitati[forma] = true
+
+		//visito i nodi adiacenti
+		for _, adj := range listaAdiacenza[currentNode] {
+			if !nodiVisitati[adj] {
+				nodiVisitati[adj] = true
+				coda.enqueue(adj)
+				predecessori[adj] = currentNode
+
+				//se trovo il nodo beta esco
+				if adj == beta {
+					return ricostruisciSequenza(alpha, beta, predecessori)
+				}
 			}
 		}
 	}
-
-	return ricostruisciSequenza(alpha, beta, elencoPredecessori)
+	return nil
 }
 
 func disponiFilaMinima(g gioco, alpha, beta string) {
+	//Creo la mappa di liste di adiacenza e la popolo
 	listaAdiacenza := make(map[string][]string)
-	coda := newQueue()
-	elencoNodiVisitati := make(map[string]bool)
-	elencoPredecessori := make(map[string]string)
-
 	popolaListaAdiacenza(g, listaAdiacenza)
 
 	if alpha == beta {
-		sequenzaForme := append([]string{}, alpha)
-		tempSequenzaForme := casoAlphaUgualeBeta(g, coda, listaAdiacenza, elencoPredecessori, elencoNodiVisitati, alpha, beta)
-		sequenzaForme = append(sequenzaForme, tempSequenzaForme...)
-		listaNomi := creaListaNomi(g, sequenzaForme)
-		if listaNomi == "" {
-			fmt.Printf("non esiste fila da %s a %s\n", alpha, beta)
-			return
+		//controllo se e' il caso facile o difficile
+		easy, listaNomi := controllaCasoSemplice(g, listaAdiacenza, alpha)
+		if easy {
+			//elimino l'ultimo spazio e dispongo la fila
+			listaNomi = listaNomi[:len(listaNomi)-1]
+			disponiFila(g, listaNomi)
+		} else {
+			//fare caso in cui alpha != beta
+			fmt.Println("hello world")
 		}
-		listaNomi = listaNomi[:len(listaNomi)-1]
-		disponiFila(g, listaNomi)
+
 	} else {
-		sequenzaForme := bfsNormale(g, coda, listaAdiacenza, elencoPredecessori, elencoNodiVisitati, alpha, beta)
+		sequenzaForme := bfsNormale(listaAdiacenza, alpha, beta)
 		listaNomi := creaListaNomi(g, sequenzaForme)
+
+		//controllo se listaNomi e' vuota
 		if listaNomi == "" {
 			fmt.Printf("non esiste fila da %s a %s\n", alpha, beta)
-			return
+		} else {
+			//elimino l'ultimo spazio e disponog la fila
+			listaNomi = listaNomi[:len(listaNomi)-1]
+			disponiFila(g, listaNomi)
 		}
-		listaNomi = listaNomi[:len(listaNomi)-1]
-		disponiFila(g, listaNomi)
 	}
 }
