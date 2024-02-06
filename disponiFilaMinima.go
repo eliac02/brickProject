@@ -62,19 +62,27 @@ func controllaCasoSemplice(g gioco, listaAdiacenza map[string][]string, alpha st
 		//controlla se ci sono i mattoncini giusti nella scatola
 		for nome, bordi := range g.scatola {
 			if bordi[0] == alpha && bordi[1] == adj {
-				listaNomi += "+" + nome + " "
+				if counter == 1 {
+					listaNomi += "-" + nome + " "
+				} else {
+					listaNomi += "+" + nome + " "
+				}
 				counter++
 			} else if bordi[1] == alpha && bordi[0] == adj {
-				listaNomi += "-" + nome + " "
+				if counter == 1 {
+					listaNomi += "+" + nome + " "
+				} else {
+					listaNomi += "-" + nome + " "
+				}
 				counter++
 			}
+			if counter == 2 {
+				return true, listaNomi
+			}
+			//controllare che i mattoncini combacino tra loro sx-dx || dx-dx
 		}
-		if counter == 2 {
-			return true, listaNomi
-		} else {
-			listaNomi = ""
-			counter = 0
-		}
+		listaNomi = ""
+		counter = 0
 	}
 	return false, ""
 }
