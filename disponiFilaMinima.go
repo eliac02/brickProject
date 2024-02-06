@@ -126,7 +126,7 @@ func bfsAlphaUgualebeta(listaAdiacenza map[string][]string, alpha, beta string) 
 		aggiungiCollegamento(listaAdiacenza, alpha, adj)
 	}
 
-	return append([]string{alpha}, camminoMinimo...)
+	return append(camminoMinimo, alpha)
 }
 
 func bfsNormale(listaAdiacenza map[string][]string, alpha, beta string) []string {
