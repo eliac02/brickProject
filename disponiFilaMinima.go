@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func contains(array []string, str string) bool {
 	for _, element := range array {
@@ -11,13 +13,17 @@ func contains(array []string, str string) bool {
 	return false
 }
 
-func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) {
-	for forma := range g.forme {
+func rimuoviElementoDaArray(array []string, indice int) []string {
+	return append(array[:indice], array[indice+1:]...)
+}
+
+func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) { //O(n^3)
+	for forma := range g.forme { //O(m)
 		//aggiunge forma alla lista di adiacenza
 		listaAdiacenza[forma] = make([]string, 0)
 		//controlla se la forma e' adiacente ad un'altra forma
 		//per farlo controllo le forme dei mattoncini dentro alla scatola
-		for _, mattoncino := range g.scatola {
+		for _, mattoncino := range g.scatola { //O(n)
 			//controllo anche che la forma non sia gia' presente nella lista di adiacenza
 			if mattoncino[0] == forma && !contains(listaAdiacenza[forma], mattoncino[1]) {
 				listaAdiacenza[forma] = append(listaAdiacenza[forma], mattoncino[1])
@@ -31,20 +37,70 @@ func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) {
 func ricostruisciSequenza(alpha, beta string, elencoPredecessori map[string]string) []string {
 	var sequenza []string
 	for current := beta; current != ""; current = elencoPredecessori[current] {
-		sequenza = append(sequenza, current)
+		sequenza = append([]string{current}, sequenza...)
 	}
 	return sequenza
 }
 
-func disponiFilaMinima(g gioco, alpha, beta string) {
-	//modello il grafo come una lista di adiacenza
-	listaAdiacenza := make(map[string][]string)
-	coda := newQueue()
-	elencoNodiVisitati := make(map[string]bool)
-	elencoPredecessori := make(map[string]string)
+func creaListaNomi(g gioco, sequenzaForme []string) string {
+	listaNomi := ""
+	for i := len(sequenzaForme) - 1; i > 0; i-- {
+		for nome, bordi := range g.scatola {
+			coppiaForme := [2]string{sequenzaForme[i], sequenzaForme[i-1]}
+			if bordi == coppiaForme {
+				listaNomi += "+" + nome + " "
+				break
+			}
+			coppiaFormeInversa := [2]string{sequenzaForme[i-1], sequenzaForme[i]}
+			if bordi == coppiaFormeInversa {
+				listaNomi += "-" + nome + " "
+				break
+			}
+		}
+	}
+	return listaNomi
+}
 
-	popolaListaAdiacenza(g, listaAdiacenza)
+func trovaSequenzaPiuCorta(elencoSequenze [][]string) int {
+	min := len(elencoSequenze[0])
+	var i int
+	for index, sequenza := range elencoSequenze {
+		if len(sequenza) < min {
+			min = len(sequenza)
+			i = index
+		}
+	}
+	return i
+}
 
+func casoAlphaUgualeBeta(g gioco, coda *queue, listaAdiacenza map[string][]string, elencoPredecessori map[string]string, elencoNodiVisitati map[string]bool, alpha, beta string) []string {
+	var elencoSequenze [][]string
+	var sequenzaForme []string
+	for _, adj := range listaAdiacenza[alpha] {
+		tempMap := make(map[string][]string)
+		for k, v := range listaAdiacenza {
+			tempMap[k] = append([]string{}, v...)
+		}
+		for i, v := range tempMap[adj] {
+			if v == alpha {
+				tempArray := rimuoviElementoDaArray(tempMap[adj], i)
+				tempMap[adj] = tempArray
+			}
+		}
+		for i, v := range tempMap[alpha] {
+			if v == adj {
+				tempArray := rimuoviElementoDaArray(tempMap[alpha], i)
+				tempMap[alpha] = tempArray
+			}
+		}
+		sequenzaForme = bfsNormale(g, coda, tempMap, elencoPredecessori, elencoNodiVisitati, adj, beta)
+		elencoSequenze = append(elencoSequenze, sequenzaForme)
+	}
+	index := trovaSequenzaPiuCorta(elencoSequenze)
+	return elencoSequenze[index]
+}
+
+func bfsNormale(g gioco, coda *queue, listaAdiacenza map[string][]string, elencoPredecessori map[string]string, elencoNodiVisitati map[string]bool, alpha, beta string) []string {
 	coda.enqueue(alpha)
 	elencoPredecessori[alpha] = ""
 	elencoNodiVisitati[alpha] = true
@@ -59,39 +115,38 @@ func disponiFilaMinima(g gioco, alpha, beta string) {
 				elencoNodiVisitati[forma] = true
 			}
 		}
-		//controllare cosa succede se non c'e' la sequenza
 	}
 
-	sequenzaForme := ricostruisciSequenza(alpha, beta, elencoPredecessori)
+	return ricostruisciSequenza(alpha, beta, elencoPredecessori)
+}
 
-	//ottieni una stringa con le forme da dare a disponiFila()
-	//ciclo su sequenzaForme e aggiungo le forme alla stringa con il segno corretto
-	listaNomi := ""
-	for i := len(sequenzaForme) - 1; i > 0; i-- {
-		//guardo le forme a coppie e controllo dentro a g.scatola quale sia il nome del mattoncino
-		//se le due forme sono i bordi di un mattoncino concateno il nome del mattoncino alla stringa
-		for nome, bordi := range g.scatola {
-			coppiaForme := [2]string{sequenzaForme[i], sequenzaForme[i-1]}
-			if bordi == coppiaForme {
-				listaNomi += "+" + nome + " "
-				break
-			}
-			coppiaFormeInversa := [2]string{sequenzaForme[i-1], sequenzaForme[i]}
-			if bordi == coppiaFormeInversa {
-				listaNomi += "-" + nome + " "
-				break
-			}
+func disponiFilaMinima(g gioco, alpha, beta string) {
+	listaAdiacenza := make(map[string][]string)
+	coda := newQueue()
+	elencoNodiVisitati := make(map[string]bool)
+	elencoPredecessori := make(map[string]string)
+
+	popolaListaAdiacenza(g, listaAdiacenza)
+
+	if alpha == beta {
+		sequenzaForme := append([]string{}, alpha)
+		tempSequenzaForme := casoAlphaUgualeBeta(g, coda, listaAdiacenza, elencoPredecessori, elencoNodiVisitati, alpha, beta)
+		sequenzaForme = append(sequenzaForme, tempSequenzaForme...)
+		listaNomi := creaListaNomi(g, sequenzaForme)
+		if listaNomi == "" {
+			fmt.Printf("non esiste fila da %s a %s\n", alpha, beta)
+			return
 		}
+		listaNomi = listaNomi[:len(listaNomi)-1]
+		disponiFila(g, listaNomi)
+	} else {
+		sequenzaForme := bfsNormale(g, coda, listaAdiacenza, elencoPredecessori, elencoNodiVisitati, alpha, beta)
+		listaNomi := creaListaNomi(g, sequenzaForme)
+		if listaNomi == "" {
+			fmt.Printf("non esiste fila da %s a %s\n", alpha, beta)
+			return
+		}
+		listaNomi = listaNomi[:len(listaNomi)-1]
+		disponiFila(g, listaNomi)
 	}
-
-	//controllo che listaNomi non sia vuota
-	if listaNomi == "" {
-		fmt.Printf("non esiste fila da %s a %s\n", alpha, beta)
-		return
-	}
-	//toilgo lo spazio finale
-	listaNomi = listaNomi[:len(listaNomi)-1]
-
-	//dispongo la fila
-	disponiFila(g, listaNomi)
 }
