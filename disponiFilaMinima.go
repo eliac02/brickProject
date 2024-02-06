@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func contains(array []string, str string) bool {
 	for _, element := range array {
@@ -76,6 +79,48 @@ func controllaCasoSemplice(g gioco, listaAdiacenza map[string][]string, alpha st
 	return false, ""
 }
 
+func eliminaCollegamento(listaAdiacenza map[string][]string, alpha, beta string) {
+	//elimino i collegamenti tra alpha e beta
+	for i, adj := range listaAdiacenza[alpha] {
+		if adj == beta {
+			listaAdiacenza[alpha] = append(listaAdiacenza[alpha][:i], listaAdiacenza[alpha][i+1:]...)
+		}
+	}
+	for i, adj := range listaAdiacenza[beta] {
+		if adj == alpha {
+			listaAdiacenza[beta] = append(listaAdiacenza[beta][:i], listaAdiacenza[beta][i+1:]...)
+		}
+	}
+}
+
+func aggiungiCollegamento(listaAdiacenza map[string][]string, alpha, beta string) {
+	//riaggiungo i collegamenti tra alpha e beta
+	listaAdiacenza[alpha] = append(listaAdiacenza[alpha], beta)
+	listaAdiacenza[beta] = append(listaAdiacenza[beta], alpha)
+}
+
+func bfsAlphaUgualebeta(listaAdiacenza map[string][]string, alpha, beta string) []string {
+	//creo tutte le strutture dati necessarie
+
+	var camminoMinimo []string
+	var lenCamminoMinimo int = math.MaxInt32
+
+	for _, adj := range listaAdiacenza[alpha] {
+		//elimino i collegamenti tra adj e alpha
+		eliminaCollegamento(listaAdiacenza, alpha, adj)
+		//trovo il cammino tra adj e beta
+		sequenzaForme := bfsNormale(listaAdiacenza, adj, beta)
+		if lenCamminoMinimo > len(sequenzaForme) {
+			lenCamminoMinimo = len(sequenzaForme)
+			camminoMinimo = sequenzaForme
+		}
+		//aggiungo il collegamento tra adj e beta
+		aggiungiCollegamento(listaAdiacenza, alpha, adj)
+	}
+
+	return append([]string{alpha}, camminoMinimo...)
+}
+
 func bfsNormale(listaAdiacenza map[string][]string, alpha, beta string) []string {
 	//creo tutte le strutture dati necessarie
 
@@ -126,7 +171,17 @@ func disponiFilaMinima(g gioco, alpha, beta string) {
 			disponiFila(g, listaNomi)
 		} else {
 			//fare caso in cui alpha != beta
-			fmt.Println("hello world")
+			sequenzaForme := bfsAlphaUgualebeta(listaAdiacenza, alpha, beta)
+			listaNomi := creaListaNomi(g, sequenzaForme)
+
+			//controllo se listaNomi e' vuota
+			if listaNomi == "" {
+				fmt.Printf("non esiste fila da %s a %s\n", alpha, beta)
+			} else {
+				//elimino l'ultimo spazio e dispongo la fila
+				listaNomi = listaNomi[:len(listaNomi)-1]
+				disponiFila(g, listaNomi)
+			}
 		}
 
 	} else {
