@@ -1,0 +1,113 @@
+﻿[elia@arch-elia ~/adsExam/]$ m elia cortesi 01911A
+[elia@arch-elia ~/adsExam/]$ m algorithm exam brickProject
+[elia@arch-elia ~/adsExam/]$ s brickProject
+
+brickProject by Elia Cortesi
+
+Indice:
+1 – Introduzione
+	1.1 – Descrizione del problema
+	1.2 – Struttura del progetto
+2 - Modellazione e implementazione
+	2.1 – Modellazione del problema
+	2.2 – Implementazione delle strutture dati
+		2.2.1 – Implementazione di gioco
+		2.2.2 – Implementazione di mattoncino
+		2.2.3 – Implementazione di fila
+		2.2.4 – Implementazione delle liste concatenate
+		2.2.5 – Implementazione delle code
+	
+3 - Spiegazione delle funzioni
+	3.1 – Spiegazione di inserisciMattoncino
+	3.2 – Spiegazione di stampaMattoncino
+	3.3 – Spiegazione di disponiFila
+	3.4 – Spiegazione di stampaFila
+	3.5 – Spiegazione di eliminaFila
+	3.6 – Spiegazione di sottostringaMassima
+	3.7 – Spiegazione di indiceCacofonia
+	3.8 – Spiegazione di disponiFilaMinima
+
+1 - Introduzione
+
+1.1 - Descrizione del problema
+
+Il problema si ispira ad un gioco da tavolo simile al domino. Abbiamo una scatola contenente dei mattoncini, e un tavolo su cui possiamo posizionare delle file formate dalla concatenazione dei mattoncini. I mattoncini possono concatenarsi tra loro perche’ le loro estremita’ (sinistra e destra) hanno una determinata forma. Due mattoncini si possono concatenare se e solo se l’estremita’ destra del primo e’ uguale all’estremita’ sinistra del secondo oppure se l’estremita’ destra del primo e’ uguale all’estremita’ destra del secondo (cio’ e’ possibile concatenando il secondo mattoncino al contrario).
+Un mattoncino e’ identificato da una tripla m(alpha, beta, sigma) dove alpha e beta sono delle stringhe che corrispondono rispettivamente alle estremita’ sinistra e destra del mattoncino e sigma e’ una stringa che corrisponde al nome del mattoncino. Quando piu’ mattoncini si concatenano formando una fila, il nome della stessa e’ la concatenazione di tutti i sigma dei mattoncini (sigma1sigma2...sigman).
+Questa e’ una breve descrizione iniziale del problema e ulteriori dettagli verranno forniti nelle sezioni successive apposite.
+
+1.2 – Struttura del progetto
+
+brickProject/
+│
+├── test/
+│   ├── input_disponi_fila_e_indice_cacofonia.txt
+│   ├── input_fila_minima.txt
+│   ├── input_inserimento_mattoncini.txt
+│   ├── input_lungo.txt
+│   └── input_sottostringa_massima.txt
+│
+├── controllaMattoncini.go
+├── disponiFila.go
+├── disponiFilaMinima.go
+├── eliminaFila.go
+├── gestioneCode.go
+├── gestioneListe.go
+├── indiceCacofonia.go
+├── inserisciMattoncino.go
+├── main.go
+├── sottostringaMassima.go
+├── stampaFila.go
+└── stampaMattoncino.go
+I file all’interno della directory brickProject/test/ sono dei file di input in formato .txt che servono a simulare una serie di comandi per il programma.
+I file all’interno della directory brickProject/ sono tutti i file in formato .go che compongono il programma.
+Per avviare il programma correttamente eseguire il seguente comando all’interno della directory principale del progetto:
+
+[elia@arch-elia ~/brickProject/]$ go run .
+
+E poi inserire manualmente a piacimento i comandi relativi al programma elencati alla fine di questa sezione.
+
+Se si volesse utilizzare un input presente nella cartella test eseguire i seguenti comandi all’interno della directory principale del progetto:
+
+[elia@arch-elia ~/brickProject/]$ go build .
+[elia@arch-elia ~/brickProject/]$ ./main < test/input_a_piacere.txt
+
+Se invece si volesse usare un input proprio spostare il file .txt nella cartella test ed eseguire i comandi sopracitati con il nome del vostro file.
+
+Lista dei comandi:
+m α β σ inserisciMattoncino (α, β, σ)
+s σ stampaMattoncino (σ)
+d ±σ1 ±σ2 . . . ±σn disponiFila (±σ1 , ±σ2 , . . . , ±σn)
+S σ stampaFila (σ)
+e σ eliminaFila (σ)
+f α β disponiFilaMinima (α, β)
+M σ τ sottostringaMassima (σ, τ )
+i σ indiceCacofonia (σ)
+c σ α1 α2 . . . αn costo (σ, α1 , α2 , . . . , αn ) 
+q termina l’esecuzione del programma
+
+2 – Modellazione e implementazione
+
+2.1 – Modellazione del problema
+
+Analizzando bene la traccia fornita e le varie istruzioni che il programma deve elaborare posso notare alcune cose. Innanzitutto la scatola in cui i mattoncini vengono inseriti e da cui vengono prelevati deve essere in grado di gestire tante richieste, e per far si’ che lo faccia in modo efficiente deve avere un meccanisco che le permetta di trovare in fretta I mattoncini richiesti. La stessa cosa ovviamente vale per tavolo. Entrambe queste strutture dati devono essere in grado di aggiungere mattoncini (o gruppi di mattoncini nel caso di tavolo) e rimuovere mattoncini in maniera efficiente e veloce. Inoltre c’e’ una funzione particolare, disponiFilaMinima, che richiede di disporre sul tavolo una fila di mattoncini, da una determinata estremita’ ad un’altra, che abbia la minor lunghezza possibile. Per fare cio’ posso modellare i miei mattoncini con un grafo, ed utilizzare una delle tante tecniche di visita di grafi per trovare questa fila minima. Questo grafo deve avere delle particolarita’: non e’ orientato, in quanto un mattoncino puo’ essere concatenato in entrambi i versi, e non e’ pesato, in quanto non ho nessun criterio che mi faccia scegliere un mattoncino piuttosto che un altro. Altri dettagli saranno forniti nella sezione corrispondente. Infine la funzione costo richiede di operare con le file di mattoncini, aggiungendo e rimuovendo gli stessi da un punto definito della fila stessa. Per fare cio’ ritengo che delle liste concatenate siano una scelta piu’ opportuna rispetto a degli array, per questioni di efficienza e di spazio.
+
+
+
+2.2 – Implementazione delle strutture dati
+
+2.2.1 – Implementazione di gioco
+
+gioco e’ la struttura dati che rappresenta il gioco nella sua interita’, di conseguenza al suo interno conterra’ sia la scatola sia il tavolo. In Go posso implementarlo con una struct con al suo interno due campi: scatola e tavolo. Come detto nella sezione 2.1 queste due strutture devono essere efficienti e veloci negli inserimenti, nelle cancellazioni e nelle ricerche, e le mappe penso che corrispondano a questo identikit. Esse sono delle strutture dati che associano ad una chiave un valore. Le chiavi sono univoche, il che significa che non ci possono essere due valori diversi nella mappa, memorizzati con la stessa chiave. Per scatola ho usato una mappa con come chiave una stringa, che rappresenta il nome del mattoncino (dettagli nella sezione 2.2.2), e come valore un array di 2 stringhe che contiene il bordo sinistro e il bordo destro del mattoncino. Per tavolo ho usato una mappa con come chiave una stringa, che rappresenta il nome della fila, e come valore un tipo fila (dettagli nella sezione 2.2.3). In questo modo le operazioni di inserimento, cancellazione e ricerca hanno costo O(1), perche’ usano il meccanismo di ricerca chiave-valore, che e’ immediato rispetto al dover “guardare” tutta la struttura.
+
+2.2.2 – Implementazione di mattoncino
+
+mattoncino e’ la struttura dati che rappresenta un singolo mattoncino. Un mattoncino e’ identificato da una tripla m(alpha, beta, sigma), dove alpha, beta e sigma sono delle stringhe. alpha e beta corrispondono ai bordi sinisto e destro del mattoncino e sigma corrisponde al suo nome. Posso usare una struct con 3 campi, tutti e 3 di tipo string.
+I mattoncini, tuttavia, devono rispettare delle condizioni: non possono esserci due mattoncini con lo stesso nome e un mattoncino non puo’ avere i bordi uguali tra loro.
+
+2.2.3 – Implementazione di fila
+
+fila e’ la struttura dati che rappresenta una concatenazione di mattoncini. I mattoncini possono concatenarsi in due modi: o in modo normale alpha-beta o in modo inverso alpha-alpha (invertendo il secondo). In Go posso implementarla con una struct.
+
+
+
+
