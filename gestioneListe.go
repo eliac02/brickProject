@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// listNode represents a node in the linked list.
 type listNode struct {
 	next  *listNode
 	prev  *listNode
@@ -11,22 +12,32 @@ type listNode struct {
 	data  mattoncino
 }
 
+// linkedList reoresents a doubly linked list.
 type linkedList struct {
 	head *listNode
 	tail *listNode
 }
 
-// crea una nuova lista
+// newList creates a new empty linked list.
+//
+// @return A pointer to the newly created linked list.
 func newList() *linkedList {
 	return &linkedList{nil, nil}
 }
 
-// crea un nuovo nodo
+// newNode creates a new node with the given data and sign.
+//
+// @param data The data of the new node, that are the name, left shape and right shape of a brick.
+// @param segno The sign of the brick, "+" if it's given normal, or "-" if it's given reversed.
+// @return A pointer to the newly created node.
 func newNode(data mattoncino, segno byte) *listNode {
 	return &listNode{nil, nil, segno, data}
 }
 
-// insertisce alla fine della lista un nuovo nodo
+// addNode appends a new node to the end of the list.
+//
+// @param list The linked list to which the node will be added.
+// @param node The node to be added.
 func addNode(list *linkedList, node *listNode) {
 	if list.head == nil {
 		list.head = node
@@ -38,7 +49,10 @@ func addNode(list *linkedList, node *listNode) {
 	}
 }
 
-// da completare con controlli nel caso il nodo sia il primo o l'ultimo
+// deleteNode removes a node from the list.
+//
+// @param list The linked list from which the node will be removed.
+// @param node The node to be removed.
 /*func deleteNode(list *linkedList, node *listNode) {
 	current := list.head
 	for current != nil {
@@ -51,8 +65,12 @@ func addNode(list *linkedList, node *listNode) {
 	}
 }*/
 
-// da completare con controlli nel caso il nodo sia il primo o l'ultimo
-/*func insertNode(list *linkedList, node *listNode, id string) { // id è il nome del nodo dopo il quale inserire node
+// insertNode inserts a new node after a specified node in the list.
+//
+// @param list The linked list in which the node will be inserted.
+// @param node The node to be inserted.
+// @param id The name of the node after which the new node will be inserted.
+/*func insertNode(list *linkedList, node *listNode, id string) {
 	current := list.head
 	name := current.data.sigma
 	for current != nil {
@@ -68,10 +86,15 @@ func addNode(list *linkedList, node *listNode) {
 	}
 }*/
 
-func searchNode(list *linkedList, id string) *listNode {
+// searchNode searches for a node with the given name in the list.
+//
+// @param list The linked list to be searched.
+// @param name The name of the node.
+// @return A pointer to the found node, or nil if not found.
+func searchNode(list *linkedList, name string) *listNode {
 	current := list.head
 	for current != nil {
-		if current.data.sigma == id {
+		if current.data.sigma == name {
 			return current
 		}
 		current = current.next
@@ -79,6 +102,9 @@ func searchNode(list *linkedList, id string) *listNode {
 	return nil
 }
 
+// printList prints the contents of the linked list.
+//
+// @param list The linked list to be printed.
 func printList(list *linkedList) {
 	current := list.head
 	for current != nil {

@@ -5,6 +5,11 @@ import (
 	"math"
 )
 
+// contains checks if a given string is present in an array of strings.
+//
+// @param array The array of strings to be checked.
+// @param str The string to be searched for.
+// @return true if the string is present in the array, false otherwise.
 func contains(array []string, str string) bool {
 	for _, element := range array {
 		if element == str {
@@ -14,6 +19,10 @@ func contains(array []string, str string) bool {
 	return false
 }
 
+// popolaListaAdiacenza populates the adjacency list with adjacent bricks for each shape in the game.
+//
+// @param g The game state.
+// @param listaAdiacenza The adjacency list to be populated.
 func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) {
 	for forma := range g.forme {
 		listaAdiacenza[forma] = []string{}
@@ -28,6 +37,11 @@ func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) {
 	}
 }
 
+// creaListaNomi creates a string containing the names of bricks forming a row.
+//
+// @param g The game state.
+// @param sequenzaForme The sequence of shapes.
+// @return A string containing the names of the bricks forming the row.
 func creaListaNomi(g gioco, sequenzaForme []string) string {
 	var listaNomi string
 	for i := len(sequenzaForme) - 1; i > 0; i-- {
@@ -45,6 +59,12 @@ func creaListaNomi(g gioco, sequenzaForme []string) string {
 	return listaNomi
 }
 
+// ricostruisciSequenza reconstructs the sequence of shapes from beta to alpha using predecessor mapping.
+//
+// @param alpha The starting shape.
+// @param beta The ending shape.
+// @param predecessori The predecessor mapping.
+// @return The sequence of shapes from beta to alpha.
 func ricostruisciSequenza(alpha, beta string, predecessori map[string]string) []string {
 	var sequenzaForme []string
 	for current := beta; current != alpha; current = predecessori[current] {
@@ -54,6 +74,12 @@ func ricostruisciSequenza(alpha, beta string, predecessori map[string]string) []
 	return sequenzaForme
 }
 
+// controllaCasoSemplice checks if a minimum path of lenght three exists between to adjacent shapes.
+//
+// @param g The game state.
+// @param listaAdiacenza The adjacency list.
+// @param alpha The starting shape.
+// @return true if a minimum path of lenght three exists between to adjacent shapes, along with the sequence of bricks forming the path, otherwise false and an empty string.
 func controllaCasoSemplice(g gioco, listaAdiacenza map[string][]string, alpha string) (bool, string) {
 	listaNomi := ""
 	counter := 0
@@ -87,6 +113,11 @@ func controllaCasoSemplice(g gioco, listaAdiacenza map[string][]string, alpha st
 	return false, ""
 }
 
+// eliminaCollegamento removes the connection between two shapes in the adjacency list.
+//
+// @param listaAdiacenza The adjacency list.
+// @param alpha The first shape.
+// @param beta The second shape.
 func eliminaCollegamento(listaAdiacenza map[string][]string, alpha, beta string) {
 	//elimino i collegamenti tra alpha e beta
 	for i, adj := range listaAdiacenza[alpha] {
@@ -101,12 +132,23 @@ func eliminaCollegamento(listaAdiacenza map[string][]string, alpha, beta string)
 	}
 }
 
+// aggiungiCollegamento adds a connection between two shapes in the adjacency list.
+//
+// @param listaAdiacenza The adjacency list.
+// @param alpha The first shape.
+// @param beta The second shape.
 func aggiungiCollegamento(listaAdiacenza map[string][]string, alpha, beta string) {
 	//riaggiungo i collegamenti tra alpha e beta
 	listaAdiacenza[alpha] = append(listaAdiacenza[alpha], beta)
 	listaAdiacenza[beta] = append(listaAdiacenza[beta], alpha)
 }
 
+// bfsAlphaUgualebeta performs a Breadth-First Search (BFS) to find the shortest path between two equal shapes.
+//
+// @param listaAdiacenza The adjacency list.
+// @param alpha The starting shape.
+// @param beta The ending shape.
+// @return The shortest sequence of shapes from alpha to beta.
 func bfsAlphaUgualebeta(listaAdiacenza map[string][]string, alpha, beta string) []string {
 	//creo tutte le strutture dati necessarie
 
@@ -129,6 +171,12 @@ func bfsAlphaUgualebeta(listaAdiacenza map[string][]string, alpha, beta string) 
 	return append(camminoMinimo, alpha)
 }
 
+// bfsNormale performs a Breadth-First Search (BFS) to find the shortest path between two different shapes.
+//
+// @param listaAdiacenza The adjacency list.
+// @param alpha The starting shape.
+// @param beta The ending shape.
+// @return The shortest sequence of shapes from alpha to beta.
 func bfsNormale(listaAdiacenza map[string][]string, alpha, beta string) []string {
 	//creo tutte le strutture dati necessarie
 
@@ -165,6 +213,11 @@ func bfsNormale(listaAdiacenza map[string][]string, alpha, beta string) []string
 	return nil
 }
 
+// disponiFilaMinima arranges the bricks in the game to form the shortest sequence from alpha to beta.
+//
+// @param g The game object.
+// @param alpha The starting shape.
+// @param beta The ending shape.
 func disponiFilaMinima(g gioco, alpha, beta string) {
 	//Creo la mappa di liste di adiacenza e la popolo
 	listaAdiacenza := make(map[string][]string)

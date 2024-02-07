@@ -1,5 +1,10 @@
 package main
 
+// sottostringaMassima finds the longest common substring between two strings using dynamic programming tecnique.
+//
+// @param sigma The first string.
+// @param teta The second string.
+// @return The longest common substring between sigma and teta.
 func sottostringaMassima(sigma, teta string) string {
 	lcs := make([][]int, len(sigma)+1)
 	for i := range lcs {
