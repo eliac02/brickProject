@@ -67,6 +67,9 @@ func main() {
 		case "M":
 			stringhe := strings.Split(operand, " ")
 			fmt.Println(sottostringaMassima(stringhe[0], stringhe[1]))
+		case "c":
+			nome, forme, _ := strings.Cut(operand, " ")
+			costo(g, nome, forme)
 		case "q":
 			return
 		}

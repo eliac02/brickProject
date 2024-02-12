@@ -14,12 +14,16 @@ type queueElement struct {
 
 // newQueue creates a new empty queue.
 //
+// The complexity of this function is O(1).
+//
 // @return A pointer to the newly created queue.
 func newQueue() *queue {
 	return &queue{nil, nil}
 }
 
 // newQueueElement creates a new element with the given value.
+//
+// The complexity of this function is O(1).
 //
 // @param value The value of the new element.
 // @return A pointer to the newly created element.
@@ -28,6 +32,8 @@ func newQueueElement(value string) *queueElement {
 }
 
 // enqueue is a method that adds a new element with the given value to the end of the queue.
+//
+// The complexity of this function is O(1).
 //
 // @param value The value to be added to the queue.
 func (q *queue) enqueue(value string) {
@@ -41,6 +47,8 @@ func (q *queue) enqueue(value string) {
 }
 
 // dequeue is a method that removes the first element from the queue.
+//
+// The complexity of this function is O(1).
 func (q *queue) dequeue() {
 	if q.head == nil {
 		return
@@ -53,12 +61,16 @@ func (q *queue) dequeue() {
 
 // isEmpty is a method that checks if the queue is empty.
 //
+// The complexity of this function is O(1).
+//
 // @return true if the queue is empty, false otherwise.
 func (q *queue) isEmpty() bool {
 	return q.head == nil
 }
 
 // bottom is a method that returns the value of the first element in the queue.
+//
+// The complexity of this function is O(1).
 //
 // @return The value of the first element, or an empty string if the queue is empty.
 func (q *queue) bottom() string {

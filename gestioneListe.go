@@ -91,15 +91,15 @@ func addNode(list *linkedList, node *listNode) {
 // @param list The linked list to be searched.
 // @param name The name of the node.
 // @return A pointer to the found node, or nil if not found.
-func searchNode(list *linkedList, name string) *listNode {
+func searchNode(list *linkedList, name string) (bool, *listNode) {
 	current := list.head
 	for current != nil {
 		if current.data.sigma == name {
-			return current
+			return true, current
 		}
 		current = current.next
 	}
-	return nil
+	return false, nil
 }
 
 // printList prints the contents of the linked list.

@@ -1,0 +1,9 @@
+m a b uno
+m c b due
+m c d tre
+d +uno -due +tre
+c uno d c a b c
+m a b quattro
+m a c cinque
+m c a sei
+c uno d c a b c
