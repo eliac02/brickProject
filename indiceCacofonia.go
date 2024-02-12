@@ -1,6 +1,10 @@
+//CORESI ELIA 01911A
+
 package main
 
 // indiceCacofonia calculates the cacophony index of a given brick in the game.
+//
+// The complexity of this function is O(n*m*k), where n is the lenght of row's name, m is the length of the brick's name and k is the number of rows on the table.
 //
 // @param g The game state.
 // @param sigma The name of the brick.

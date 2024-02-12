@@ -1,6 +1,10 @@
+//CORTESI ELIA 01911A
+
 package main
 
 // sottostringaMassima finds the longest common substring between two strings using dynamic programming tecnique.
+//
+// The complexity of this function is O(n*m), where n is the length of the first string and m is the length of the second string.
 //
 // @param sigma The first string.
 // @param teta The second string.

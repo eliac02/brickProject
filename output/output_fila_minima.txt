@@ -1,0 +1,4 @@
+(
+cavallo: stella, luna
+cappello: luna, cerchio
+)

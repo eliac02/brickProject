@@ -1,0 +1,2 @@
+gamba: insegnante, mondo
+alpaca: lampada, cerume

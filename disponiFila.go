@@ -1,8 +1,12 @@
+//CORTESI ELIA 01911A
+
 package main
 
 import "strings"
 
 // creaFila creates a row in the game.
+//
+// The complexity of this function is O(n), where n is the lenght of sliceNames.
 //
 // @param g The game object.
 // @param sliceNames The names of the bricks that will form the row.
@@ -17,6 +21,8 @@ func creaFila(g gioco, sliceNames []string, list *linkedList) {
 }
 
 // disponiFila arranges a row of bricks on the table.
+//
+// The complexity of this function is O(n^2), where n is the length of listaNomi.
 //
 // @param g The game object.
 // @param listaNomi The string containing the names of the bricks that will form the row.

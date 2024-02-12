@@ -1,3 +1,5 @@
+//CORTESI ELIA 01911A
+
 package main
 
 import (
@@ -5,6 +7,8 @@ import (
 )
 
 // controllaScatola checks if the brick named sigma is in the box.
+//
+// The complexity of this function is O(1).
 //
 // @param scatola The box containing the bricks.
 // @param sigma The name of the brick.
@@ -18,6 +22,8 @@ func controllaScatola(scatola map[string][2]string, sigma string) bool {
 }
 
 // controllaTavolo checks if the brick named sigma is on the table.
+//
+// The complexity of this function is O(n*m), where n is the lenght of row's name and m is the lenght of the brick's name
 //
 // @param tavolo The table containing rows of bricks.
 // @param sigma The name of the brick.
@@ -33,6 +39,8 @@ func controllaTavolo(tavolo map[string]fila, sigma string) bool {
 
 // trovaFilaSulTavolo finds the row on the table that contains the brick named sigma.
 //
+// The complexity of this function is O(n*m), where n is the lenght of row's name and m is the lenght of the brick's name
+//
 // @param tavolo The table containing rows of bricks.
 // @param sigma The name of the brick.
 // @return The name of the row containing the brick and the row itself.
@@ -46,6 +54,8 @@ func trovaFilaSulTavolo(tavolo map[string]fila, sigma string) (string, fila) {
 }
 
 // verificaFila checks if the bricks in the given slice form a valid row.
+//
+// The complexity of this function is O(n), where n is the lenght of the slice.
 //
 // @param sliceNames The names of the bricks that will form the row.
 // @param g The game object.

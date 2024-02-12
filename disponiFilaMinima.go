@@ -1,3 +1,5 @@
+//CORTESI ELIA 01911A
+
 package main
 
 import (
@@ -6,6 +8,8 @@ import (
 )
 
 // contains checks if a given string is present in an array of strings.
+//
+// The complexity of this function is O(n) where n is the length of the array.
 //
 // @param array The array of strings to be checked.
 // @param str The string to be searched for.
@@ -20,6 +24,8 @@ func contains(array []string, str string) bool {
 }
 
 // popolaListaAdiacenza populates the adjacency list with adjacent bricks for each shape in the game.
+//
+// The complexity of this function is O(n*m*k) where n is the number of shapes, m is the number of bricks in the game and k is the length of the adjacency list.
 //
 // @param g The game state.
 // @param listaAdiacenza The adjacency list to be populated.
@@ -38,6 +44,8 @@ func popolaListaAdiacenza(g gioco, listaAdiacenza map[string][]string) {
 }
 
 // creaListaNomi creates a string containing the names of bricks forming a row.
+//
+// The complexity of this function is O(n*m) where n is the length of sequenzaForme and m is the number of bricks in the game.
 //
 // @param g The game state.
 // @param sequenzaForme The sequence of shapes.
@@ -61,6 +69,8 @@ func creaListaNomi(g gioco, sequenzaForme []string) string {
 
 // ricostruisciSequenza reconstructs the sequence of shapes from beta to alpha using predecessor mapping.
 //
+// The complexity of this function is O(n) where n is the length of the predecessor mapping.
+//
 // @param alpha The starting shape.
 // @param beta The ending shape.
 // @param predecessori The predecessor mapping.
@@ -75,6 +85,8 @@ func ricostruisciSequenza(alpha, beta string, predecessori map[string]string) []
 }
 
 // controllaCasoSemplice checks if a minimum path of lenght three exists between to adjacent shapes.
+//
+// The complexity of this function is O(n*m) where n is the number of shapes and m is the number of bricks in the game.
 //
 // @param g The game state.
 // @param listaAdiacenza The adjacency list.
@@ -105,7 +117,6 @@ func controllaCasoSemplice(g gioco, listaAdiacenza map[string][]string, alpha st
 			if counter == 2 {
 				return true, listaNomi
 			}
-			//controllare che i mattoncini combacino tra loro sx-dx || dx-dx
 		}
 		listaNomi = ""
 		counter = 0
@@ -114,6 +125,8 @@ func controllaCasoSemplice(g gioco, listaAdiacenza map[string][]string, alpha st
 }
 
 // eliminaCollegamento removes the connection between two shapes in the adjacency list.
+//
+// The complexity of this function is O(n) where n is the length of the adjacency list.
 //
 // @param listaAdiacenza The adjacency list.
 // @param alpha The first shape.
@@ -134,6 +147,8 @@ func eliminaCollegamento(listaAdiacenza map[string][]string, alpha, beta string)
 
 // aggiungiCollegamento adds a connection between two shapes in the adjacency list.
 //
+// The complexity of this function is O(n) where n is the length of the adjacency list.
+//
 // @param listaAdiacenza The adjacency list.
 // @param alpha The first shape.
 // @param beta The second shape.
@@ -144,6 +159,8 @@ func aggiungiCollegamento(listaAdiacenza map[string][]string, alpha, beta string
 }
 
 // bfsAlphaUgualebeta performs a Breadth-First Search (BFS) to find the shortest path between two equal shapes.
+//
+// The compexity of this function is O(n+m), where n is the number of shapes and m is the number of bricks in the game.
 //
 // @param listaAdiacenza The adjacency list.
 // @param alpha The starting shape.
@@ -157,7 +174,7 @@ func bfsAlphaUgualebeta(listaAdiacenza map[string][]string, alpha, beta string) 
 
 	for _, adj := range listaAdiacenza[alpha] {
 		//elimino i collegamenti tra adj e alpha
-		eliminaCollegamento(listaAdiacenza, alpha, adj)
+		eliminaCollegamento(listaAdiacenza, alpha, adj) //O(n)
 		//trovo il cammino tra adj e beta
 		sequenzaForme := bfsNormale(listaAdiacenza, adj, beta)
 		if lenCamminoMinimo > len(sequenzaForme) {
@@ -165,13 +182,15 @@ func bfsAlphaUgualebeta(listaAdiacenza map[string][]string, alpha, beta string) 
 			camminoMinimo = sequenzaForme
 		}
 		//aggiungo il collegamento tra adj e beta
-		aggiungiCollegamento(listaAdiacenza, alpha, adj)
+		aggiungiCollegamento(listaAdiacenza, alpha, adj) //O(n)
 	}
 
 	return append(camminoMinimo, alpha)
 }
 
 // bfsNormale performs a Breadth-First Search (BFS) to find the shortest path between two different shapes.
+//
+// The compexity of this function is O(n+m), where n is the number of shapes and m is the number of bricks in the game.
 //
 // @param listaAdiacenza The adjacency list.
 // @param alpha The starting shape.
@@ -214,6 +233,8 @@ func bfsNormale(listaAdiacenza map[string][]string, alpha, beta string) []string
 }
 
 // disponiFilaMinima arranges the bricks in the game to form the shortest sequence from alpha to beta.
+//
+// The complexity of this function is O(n*(m^2)) where m is the number of shapes and n is the number of bricks in the game.
 //
 // @param g The game object.
 // @param alpha The starting shape.

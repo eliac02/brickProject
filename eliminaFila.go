@@ -1,9 +1,10 @@
+//CORTESI ELIA 01911A
+
 package main
 
 // eliminaFila removes a row of bricks from the game.
 //
-// If the row exists on the table, its bricks are placed back into the box,
-// and the row is removed from the table.
+// The complexity of this function is O(n*m*k), where n is the length of the row's name, m is the length of the brick's name and k is the number of rows.
 //
 // @param g The game object.
 // @param sigma The name of the row to be removed.

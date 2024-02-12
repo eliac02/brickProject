@@ -1,0 +1,6 @@
+m lampada cerume alpaca
+m mondo capra perla
+m insegnante mondo gamba
+s gamba
+s alpaca
+q

@@ -1,0 +1,6 @@
+(
+elefante: stella, fiore
+mela: fiore, quadrato
+cammello: quadrato, cerchio
+)
+6

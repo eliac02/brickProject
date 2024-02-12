@@ -1,0 +1,36 @@
+ela
+caello
+topo
+to
+ela
+(
+cavallo: stella, luna
+cappello: luna, cerchio
+)
+5
+(
+elefante: stella, fiore
+mela: fiore, quadrato
+10
+cammello: quadrato, cerchio
+)
+6
+non esiste fila da fiore a cerchio
+(
+mela: fiore, quadrato
+cammello: quadrato, cerchio
+)
+3
+(
+topolino: croce, sole
+tavolo: sole, croce
+)
+4
+(
+tela: croce, cuore
+pesca: cuore, cerchio
+cammello: cerchio, quadrato
+mela: quadrato, fiore
+topo: fiore, croce
+)
+7

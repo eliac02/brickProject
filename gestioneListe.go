@@ -1,3 +1,5 @@
+//CORTESI ELIA 01911A
+
 package main
 
 import (
@@ -20,12 +22,16 @@ type linkedList struct {
 
 // newList creates a new empty linked list.
 //
+// The complexity of this function is O(1).
+//
 // @return A pointer to the newly created linked list.
 func newList() *linkedList {
 	return &linkedList{nil, nil}
 }
 
 // newNode creates a new node with the given data and sign.
+//
+// The complexity of this function is O(1).
 //
 // @param data The data of the new node, that are the name, left shape and right shape of a brick.
 // @param segno The sign of the brick, "+" if it's given normal, or "-" if it's given reversed.
@@ -35,6 +41,8 @@ func newNode(data mattoncino, segno byte) *listNode {
 }
 
 // addNode appends a new node to the end of the list.
+//
+// The complexity of this function is O(1).
 //
 // @param list The linked list to which the node will be added.
 // @param node The node to be added.
@@ -88,6 +96,8 @@ func addNode(list *linkedList, node *listNode) {
 
 // searchNode searches for a node with the given name in the list.
 //
+// The complexity of this function is O(n), where n is the length of the list.
+//
 // @param list The linked list to be searched.
 // @param name The name of the node.
 // @return A pointer to the found node, or nil if not found.
@@ -103,6 +113,8 @@ func searchNode(list *linkedList, name string) (bool, *listNode) {
 }
 
 // printList prints the contents of the linked list.
+//
+// The complexity of this function is O(n), where n is the length of the list.
 //
 // @param list The linked list to be printed.
 func printList(list *linkedList) {
