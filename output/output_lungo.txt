@@ -1,5 +1,6 @@
 ela
 caello
+
 topo
 to
 ela
@@ -11,7 +12,6 @@ cappello: luna, cerchio
 (
 elefante: stella, fiore
 mela: fiore, quadrato
-10
 cammello: quadrato, cerchio
 )
 6
